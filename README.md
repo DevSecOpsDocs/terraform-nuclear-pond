@@ -2,6 +2,8 @@
 
 ![Infrastructure](/static/infrastructure.png)
 
+> :warning: **This is actively under development**: Bugs will occur especially with the schema of json within S3 as a result of Nuclei formatting. So expect some bumps along the way if you decide to be an early adopter"
+
 This terraform module allows you to execute [Nuclei](https://github.com/projectdiscovery/nuclei) within a [lambda function](https://aws.amazon.com/lambda/) within AWS. This is designed to be the backend for [Nuclear Pond](https://github.com/DevSecOpsDocs/Nuclear-Pond). Please go to that repository first if you have not. The purpose of which is to allow you to perform automated scans on your infrastructure and allow the results to be parsed in any way that you choose. 
 
 Nuclei can help you identify technologies running within your infrastructure, misconfigurations, exploitable vulnerabilities, network protocols, default credentials, exposed panels, takeovers, and so much more. Continuously monitoring for such vulnerabilities within your network can be crucial to providing you with a last line of defense against vulnerabilities hidden within your cloud infrastructure. 
