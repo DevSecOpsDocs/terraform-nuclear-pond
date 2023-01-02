@@ -105,6 +105,13 @@ func handler(ctx context.Context, event Event) (Response, error) {
 				Error:  err.Error(),
 			}, nil
 		}
+
+		if len(findings) == 0 {
+			return Response{
+				Output: "No findings, better luck next time!",
+			}, nil
+		}
+
 		// Write the findings to a file and upload to s3
 		s3Key, err := writeAndUploadFindings(findings)
 		if err != nil {

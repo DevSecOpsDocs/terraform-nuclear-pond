@@ -2,8 +2,6 @@
 
 ![Infrastructure](/static/infrastructure.png)
 
-> :warning: **This is actively under development**: Bugs will occur especially with the schema of json within S3 as a result of Nuclei formatting. So expect some bumps along the way if you decide to be an early adopter"
-
 This terraform module allows you to execute [Nuclei](https://github.com/projectdiscovery/nuclei) within a [lambda function](https://aws.amazon.com/lambda/) within AWS. This is designed to be the backend for [Nuclear Pond](https://github.com/DevSecOpsDocs/Nuclear-Pond). Please go to that repository first if you have not. The purpose of which is to allow you to perform automated scans on your infrastructure and allow the results to be parsed in any way that you choose. 
 
 Nuclei can help you identify technologies running within your infrastructure, misconfigurations, exploitable vulnerabilities, network protocols, default credentials, exposed panels, takeovers, and so much more. Continuously monitoring for such vulnerabilities within your network can be crucial to providing you with a last line of defense against vulnerabilities hidden within your cloud infrastructure. 
@@ -34,75 +32,6 @@ This is what must be passed to the lambda function. The `Targets` can be a list 
   ],
   "Output": "json"
 }
-```
-
-## Nuclei Templates
-
-[ProjectDiscovery](https://projectdiscovery.io) maintains the repository [nuclei-templates](https://github.com/projectdiscovery/nuclei-templates) which contains various templates for the nuclei scanner provided by them and the community. Contributions are welcome and straight forward to add to based on previous examples and you can reference my [pull request](https://github.com/projectdiscovery/nuclei-templates/pull/6440) to get a sense of just how easy it is. 
-
-## Nuclei Usage
-
-This is to help you understand how nuclei can be used to your advantage and help you understand what nuclei can catch buried within your infrastructure. 
-
-- Subdomain takeovers
-- Enumerate network services
-- Misconfigurations
-- Panels(Jenkins, Grafana, Kibana, etc.)
-- Default credentials
-- Vulnerabilities
-- Exposures(Backups, logs, files, configs, etc.)
-
-
-## Network
-
-Here is an example in which we want to enumerate some protocols running on [scanme.nmap.org](http://scanme.nmap.org) with the [network detection templates](https://github.com/projectdiscovery/nuclei-templates/tree/main/network/detection). This will help us identify network services running on the specified host. This allows us to currently check over 40 different network based services such as ssh, smtp, mysql, mongodb, telnet, etc. 
-
-```log
-$ nuclei -u scanme.nmap.org -t network/detection
-
-                     __     _
-   ____  __  _______/ /__  (_)
-  / __ \/ / / / ___/ / _ \/ /
- / / / / /_/ / /__/ /  __/ /
-/_/ /_/\__,_/\___/_/\___/_/   v2.8.3
-
-		projectdiscovery.io
-
-[ERR] Could not parse nuclei-ignore file: EOF
-[INF] Using Nuclei Engine 2.8.3 (latest)
-[INF] Using Nuclei Templates 9.3.2 (latest)
-[INF] Templates added in last update: 57
-[INF] Templates loaded for scan: 42
-[INF] Targets loaded for scan: 1
-[openssh-detect] [network] [info] scanme.nmap.org:22 [SSH-2.0-OpenSSH_6.6.1p1 Ubuntu-2ubuntu2.13]
-```
-
-## Takeovers
-
-Takeovers can be a common occurrence when you manage thousands of zones within your infrastructure and mistakes certainly occur in which deprecating assets may not complete in the correct order or completely. This can lead to dangling assets that can be taken over by an attacker. The repository [Can I take over XYZ](https://github.com/EdOverflow/can-i-take-over-xyz) is an excellent resource if you want to learn what the current landscape looks like at this time. 
-
-Nuclei currently has over 70 different templates to detect if you are currently vulnerable to a takeover and here is an example as to how check to see if a domain is vulnerable. 
-
-
-```log
-$ nuclei -u https://this-bucket-does-not-exist-1234.s3.amazonaws.com/ -tags takeover
-
-                     __     _
-   ____  __  _______/ /__  (_)
-  / __ \/ / / / ___/ / _ \/ /
- / / / / /_/ / /__/ /  __/ /
-/_/ /_/\__,_/\___/_/\___/_/   v2.8.3
-
-		projectdiscovery.io
-
-[ERR] Could not parse nuclei-ignore file: EOF
-[INF] Using Nuclei Engine 2.8.3 (latest)
-[INF] Using Nuclei Templates 9.3.2 (latest)
-[INF] Templates added in last update: 57
-[INF] Templates loaded for scan: 74
-[INF] Targets loaded for scan: 1
-[INF] Templates clustered: 69 (Reduced 68 HTTP Requests)
-[aws-bucket-takeover] [http] [high] https://this-bucket-does-not-exist-1234.s3.amazonaws.com/
 ```
 
 <!-- BEGIN_TF_DOCS -->
