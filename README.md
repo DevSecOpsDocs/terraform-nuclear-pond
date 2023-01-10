@@ -1,6 +1,6 @@
 # Nuclei Runner
 
-![Infrastructure](/static/infrastructure.png)
+![Infrastructure](/assets/infrastructure.png)
 
 This terraform module allows you to execute [Nuclei](https://github.com/projectdiscovery/nuclei) within a [lambda function](https://aws.amazon.com/lambda/) within AWS. This is designed to be the backend for [Nuclear Pond](https://github.com/DevSecOpsDocs/Nuclear-Pond). Please go to that repository first if you have not. The purpose of which is to allow you to perform automated scans on your infrastructure and allow the results to be parsed in any way that you choose. 
 
