@@ -1,5 +1,5 @@
 variable "project_name" {
-  description = "Name of the project"
+  description = "Name of the project to create and must be unique as S3 bucket names are global"
 }
 
 # You should check the latest version of Nuclei
@@ -16,6 +16,7 @@ variable "nuclei_arch" {
 
 variable "nuclei_timeout" {
   type    = number
+  description = "Lambda function timeout"
   default = 900
 }
 
