@@ -13,11 +13,6 @@ variable "project_name" {
   default     = "nuclei-scanner"
 }
 
-variable "nuclei_args" {
-  type    = list(string)
-  default = ["-u", "https://devsecopsdocs.com", "-ud", "/tmp/", "-rc", "/opt/report-config.yaml", "-t", "technologies/aws", "-stats", "-c", "50", "-rl", "300", "-timeout", "5"]
-}
-
 variable "nuclei_timeout" {
   type    = number
   default = 900
