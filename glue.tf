@@ -78,7 +78,7 @@ resource "aws_glue_catalog_table" "table" {
     ser_de_info {
       serialization_library = "org.openx.data.jsonserde.JsonSerDe"
       parameters = {
-        "serialization.format" = "1"
+        "serialization.format"      = "1"
         "serialization.null.format" = "null"
       }
     }

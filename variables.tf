@@ -1,6 +1,19 @@
+variable "project_name" {
+  description = "Name of the project to create and must be unique as S3 bucket names are global"
+}
+
+# You should check the latest version of Nuclei
+# https://github.com/projectdiscovery/nuclei/releases/
 variable "nuclei_version" {
   description = "Nuclei version to use"
-  default     = "2.8.3"
+  default     = "2.8.6"
+}
+
+# You can also use private templates by download zip of your repo, copy url from downloaded file, and paste the url in here including the token
+variable "nuclei_templates_url" {
+  description = "Nuclei templates url to use"
+  sensitive   = true
+  default     = "https://github.com/projectdiscovery/nuclei-templates/archive/refs/tags/v9.3.4.zip"
 }
 
 variable "nuclei_arch" {
@@ -8,19 +21,10 @@ variable "nuclei_arch" {
   default     = "linux_amd64"
 }
 
-variable "project_name" {
-  description = "Name of the project"
-  default     = "nuclei-scanner"
-}
-
-variable "nuclei_args" {
-  type    = list(string)
-  default = ["-u", "https://devsecopsdocs.com", "-ud", "/tmp/", "-rc", "/opt/report-config.yaml", "-t", "technologies/aws", "-stats", "-c", "50", "-rl", "300", "-timeout", "5"]
-}
-
 variable "nuclei_timeout" {
-  type    = number
-  default = 900
+  type        = number
+  description = "Lambda function timeout"
+  default     = 900
 }
 
 variable "memory_size" {
@@ -31,7 +35,6 @@ variable "memory_size" {
 variable "tags" {
   type = map(string)
   default = {
-    "Name"  = "nuclei-scanner"
-    "Owner" = "johnny"
+    "Name" = "nuclei-scanner"
   }
 }

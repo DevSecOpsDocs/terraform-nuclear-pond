@@ -31,10 +31,12 @@ type Response struct {
 }
 
 // Variables for the nuclei binary, filesystem location, and temporary files
-const nucleiBinary = "/opt/nuclei"
-const fileSystem = "/tmp/"
-const targetsFile = "/tmp/targets.txt"
-const scanOutput = "/tmp/output.json"
+var (
+	nucleiBinary = "/opt/nuclei"
+	fileSystem   = "/tmp/"
+	targetsFile  = fileSystem + "targets.txt"
+	scanOutput   = fileSystem + "output.json"
+)
 
 func handler(ctx context.Context, event Event) (Response, error) {
 	// Set the $HOME environment so nuclei can write inside of lambda
@@ -68,10 +70,10 @@ func handler(ctx context.Context, event Event) (Response, error) {
 	}
 
 	// Run the nuclei binary with the command and args
-	cmd := exec.Command(nucleiBinary, event.Args...)
-	output, err := cmd.CombinedOutput()
+	output, err := runNuclei(event.Args)
 	base64output := base64.StdEncoding.EncodeToString([]byte(output))
 	if err != nil {
+		// Return output as base64 to display in the console
 		return Response{
 			Output: string(base64output),
 			Error:  err.Error(),
@@ -85,7 +87,7 @@ func handler(ctx context.Context, event Event) (Response, error) {
 		jsonFindings, err := json.Marshal(findings)
 		if err != nil {
 			return Response{
-				Output: string(output),
+				Output: output,
 				Error:  err.Error(),
 			}, nil
 		}
@@ -101,7 +103,7 @@ func handler(ctx context.Context, event Event) (Response, error) {
 		findings, err := jsonOutputFindings(scanOutput)
 		if err != nil {
 			return Response{
-				Output: string(output),
+				Output: output,
 				Error:  err.Error(),
 			}, nil
 		}
@@ -116,7 +118,7 @@ func handler(ctx context.Context, event Event) (Response, error) {
 		s3Key, err := writeAndUploadFindings(findings)
 		if err != nil {
 			return Response{
-				Output: string(output),
+				Output: output,
 				Error:  err.Error(),
 			}, nil
 		}
@@ -133,10 +135,21 @@ func handler(ctx context.Context, event Event) (Response, error) {
 		}, nil
 	} else {
 		return Response{
-			Output: string(output),
+			Output: output,
 			Error:  "Output type not supported. Please specify json or cmd.",
 		}, nil
 	}
+}
+
+// Run Nuclei with the command and args
+func runNuclei(args []string) (string, error) {
+	// Run the nuclei binary with the command and args
+	cmd := exec.Command(nucleiBinary, args...)
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		return "", err
+	}
+	return string(output), nil
 }
 
 // Write targets to a file on disk and return filename
