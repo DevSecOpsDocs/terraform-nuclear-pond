@@ -49,16 +49,16 @@ resource "aws_s3_object" "upload_templates" {
 }
 
 # Nuclei configuration files
-data "archive_file" "report_config" {
+data "archive_file" "nuclei_config" {
   type        = "zip"
-  source_dir  = "${path.module}/config"
-  output_path = "nuclei-configs.zip"
+  source_file = "${path.module}/config/config.yaml"
+  output_path = "nuclei-config.zip"
 }
 
 resource "aws_s3_object" "upload_config" {
   bucket = aws_s3_bucket.bucket.id
-  key    = "nuclei-configs.zip"
-  source = "${path.module}/nuclei-configs.zip"
+  key    = "nuclei-config.zip"
+  source = "${path.module}/nuclei-config.zip"
 }
 
 # Build the lambda function to execute binary
