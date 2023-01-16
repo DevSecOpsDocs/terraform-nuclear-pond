@@ -4,7 +4,7 @@ resource "aws_lambda_function" "function" {
   function_name = "${var.project_name}-function"
 
   role   = aws_iam_role.lambda_role.arn
-  layers = [aws_lambda_layer_version.layer.arn, aws_lambda_layer_version.templates_layer.arn]
+  layers = [aws_lambda_layer_version.layer.arn, aws_lambda_layer_version.templates_layer.arn, aws_lambda_layer_version.configs_layer.arn]
 
   handler     = "main"
   runtime     = "go1.x"
