@@ -51,7 +51,7 @@ resource "aws_s3_object" "upload_templates" {
 # Nuclei configuration files
 data "archive_file" "report_config" {
   type        = "zip"
-  sourd_dir   = "${path.module}/config"
+  source_dir  = "${path.module}/config"
   output_path = "nuclei-configs.zip"
 }
 
