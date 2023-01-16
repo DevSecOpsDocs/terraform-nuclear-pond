@@ -53,12 +53,20 @@ data "archive_file" "nuclei_config" {
   type        = "zip"
   source_dir  = "${path.module}/config"
   output_path = "nuclei-config.zip"
+
+  # Always reupload the config files
+  triggers = {
+    always = timestamp()
+  }
 }
 
 resource "aws_s3_object" "upload_config" {
   bucket = aws_s3_bucket.bucket.id
   key    = "nuclei-config.zip"
   source = "${path.module}/nuclei-config.zip"
+
+  # Always reupload the config files
+  etag = data.archive_file.nuclei_config.output_md5
 }
 
 # Build the lambda function to execute binary
