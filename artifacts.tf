@@ -58,7 +58,7 @@ data "archive_file" "nuclei_config" {
 resource "aws_s3_object" "upload_config" {
   depends_on = [data.archive_file.nuclei_config]
   bucket = aws_s3_bucket.bucket.id
-  key    = "nuclei-config.zip"
+  key    = "nuclei-configs.zip"
   source = "${path.module}/nuclei-configs.zip"
 }
 
