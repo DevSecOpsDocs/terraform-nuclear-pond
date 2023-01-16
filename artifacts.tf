@@ -10,9 +10,7 @@ resource "null_resource" "download_nuclei" {
 }
 
 provider "github" {
-  if var.github_token != "" {
-    token = var.github_token
-  }
+  token = var.github_token
 }
 
 data "github_release" "templates" {
