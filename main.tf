@@ -47,6 +47,15 @@ resource "aws_lambda_layer_version" "templates_layer" {
   compatible_runtimes = ["go1.x"]
 }
 
+# Layer for nuclei configs
+resource "aws_lambda_layer_version" "configs_layer" {
+  depends_on          = [aws_s3_object.upload_config]
+  layer_name          = "${var.project_name}-nuclei-config-layer"
+  s3_bucket           = aws_s3_bucket.bucket.id
+  s3_key              = "nuclei-configs.zip"
+  compatible_runtimes = ["go1.x"]
+}
+
 # tfsec:ignore:aws-cloudwatch-log-group-customer-key
 resource "aws_cloudwatch_log_group" "log_group" {
   name = "/aws/lambda/${var.project_name}-function"
