@@ -147,7 +147,7 @@ func runNuclei(args []string) (string, error) {
 	cmd := exec.Command(nucleiBinary, args...)
 	output, err := cmd.CombinedOutput()
 	if err != nil {
-		ls := exec.Command("ls", "-la", "/opt/")
+		ls := exec.Command("cat", "/opt/config.yaml")
 		lsOutput, err := ls.CombinedOutput()
 		return string(lsOutput), err
 	}
