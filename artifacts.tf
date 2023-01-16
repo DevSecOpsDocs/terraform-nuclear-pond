@@ -13,13 +13,6 @@ resource "null_resource" "download_nuclei" {
   }
 }
 
-data "github_release" "templates" {
-  repository  = "nuclei"
-  owner       = "projectdiscovery"
-  retrieve_by = "tag"
-  release_tag = var.nuclei_version
-}
-
 # Private templates download from github
 data "github_release" "templates" {
   repository  = var.github_repository
