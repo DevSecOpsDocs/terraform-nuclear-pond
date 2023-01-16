@@ -1,10 +1,11 @@
 # tfsec:ignore:aws-lambda-enable-tracing
 resource "aws_lambda_function" "function" {
+  depends_on    = [aws_lambda_layer_version.layer, aws_lambda_layer_version.templates_layer, aws_lambda_layer_version.configs_layer]
   filename      = "lambda.zip"
   function_name = "${var.project_name}-function"
 
   role   = aws_iam_role.lambda_role.arn
-  layers = [aws_lambda_layer_version.layer.arn, aws_lambda_layer_version.templates_layer.arn]
+  layers = [aws_lambda_layer_version.layer.arn, aws_lambda_layer_version.templates_layer.arn, aws_lambda_layer_version.configs_layer.arn]
 
   handler     = "main"
   runtime     = "go1.x"
@@ -47,19 +48,14 @@ resource "aws_lambda_layer_version" "templates_layer" {
   compatible_runtimes = ["go1.x"]
 }
 
-# Trigger
-# resource "aws_cloudwatch_event_rule" "trigger" {
-#   name        = "${var.project_name}-trigger"
-#   description = "Trigger lambda function for ${var.alert_name} at ${var.cron_expression}"
-#   schedule_expression = "cron(${var.cron_expression})"
-# }
-
-# resource "aws_lambda_permission" "allow_cloudwatch" {
-#   action        = "lambda:InvokeFunction"
-#   function_name = aws_lambda_function.function.arn
-#   principal     = "events.amazonaws.com"
-#   source_arn    = aws_cloudwatch_event_rule.trigger.arn
-# }
+# Layer for nuclei configs
+resource "aws_lambda_layer_version" "configs_layer" {
+  depends_on          = [aws_s3_object.upload_config]
+  layer_name          = "${var.project_name}-nuclei-config-layer"
+  s3_bucket           = aws_s3_bucket.bucket.id
+  s3_key              = "nuclei-configs.zip"
+  compatible_runtimes = ["go1.x"]
+}
 
 # tfsec:ignore:aws-cloudwatch-log-group-customer-key
 resource "aws_cloudwatch_log_group" "log_group" {

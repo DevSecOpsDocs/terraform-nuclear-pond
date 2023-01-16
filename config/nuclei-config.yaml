@@ -1,0 +1,32 @@
+# Headers to include with all HTTP request
+header:
+  - 'X-BugBounty-Hacker: github/nuclearpond'
+
+# Directory based template execution
+templates:
+  - dns/
+
+# Tags based template execution
+# tags: exposures,cve
+
+# Template Filters
+# tags: exposures,cve
+# author: geeknik,pikpikcu,dhiyaneshdk
+# severity: critical,high,medium
+
+# Template Allowlist
+# include-tags: dos,fuzz # Tag based inclusion (allows overwriting nuclei-ignore list)
+# include-templates: # Template based inclusion (allows overwriting nuclei-ignore list)
+#   - vulnerabilities/xxx
+#   - misconfiguration/xxxx
+
+# Template Denylist
+# exclude-tags: info # Tag based exclusion
+# exclude-templates: # Template based exclusion
+#   - vulnerabilities/xxx
+#   - misconfiguration/xxxx
+
+# Rate Limit configuration
+rate-limit: 500
+bulk-size: 50
+concurrency: 50
