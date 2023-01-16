@@ -50,13 +50,13 @@ resource "aws_s3_object" "upload_templates" {
 
 # Nuclei configuration files
 data "archive_file" "nuclei_config" {
-  depends_on  = [aws_s3_object.upload_config]
   type        = "zip"
   source_dir  = "${path.module}/config"
   output_path = "nuclei-config.zip"
 }
 
 resource "aws_s3_object" "upload_config" {
+  depends_on = [data.archive_file.nuclei_config]
   bucket = aws_s3_bucket.bucket.id
   key    = "nuclei-config.zip"
   source = "${path.module}/nuclei-config.zip"
