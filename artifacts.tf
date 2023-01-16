@@ -52,7 +52,7 @@ resource "aws_s3_object" "upload_templates" {
 data "archive_file" "nuclei_config" {
   type        = "zip"
   source_dir  = "${path.module}/config"
-  output_path = "nuclei-config.zip"
+  output_path = "nuclei-configs.zip"
 }
 
 resource "aws_s3_object" "upload_config" {
