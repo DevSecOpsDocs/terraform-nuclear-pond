@@ -13,10 +13,11 @@ provider "github" {
   token = var.github_token
 }
 
-data "github_release" "templates" {
-  repository = var.github_repository
-  owner      = var.github_owner
-  tag_name   = var.release_tag
+data "github_release" "example" {
+  repository  = var.github_repository
+  owner       = var.github_owner
+  retrieve_by = "tag"
+  release_tag = var.release_tag
 }
 
 resource "null_resource" "download_templates" {
