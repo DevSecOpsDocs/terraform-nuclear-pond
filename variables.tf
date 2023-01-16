@@ -16,6 +16,28 @@ variable "nuclei_templates_url" {
   default     = "https://github.com/projectdiscovery/nuclei-templates/archive/refs/tags/v9.3.4.zip"
 }
 
+# Private Templates
+variable "github_repository" {
+  description = "Github repository to use for templates"
+  default     = "nuclei-templates"
+}
+
+variable "github_owner" {
+  description = "Github owner to use for templates"
+  default     = "projectdiscovery"
+}
+
+variable "release_tag" {
+  description = "Github release tag to use for templates"
+  default     = "v9.3.4"
+}
+
+variable "github_token" {
+  description = "Github token to use for private templates, leave empty if you don't need private templates"
+  default     = ""
+  sensitive   = true
+}
+
 variable "nuclei_arch" {
   description = "Nuclei architecture to use"
   default     = "linux_amd64"

@@ -9,13 +9,25 @@ resource "null_resource" "download_nuclei" {
   }
 }
 
+data "github_release" "templates" {
+  repository = var.github_repository
+  owner      = var.github_owner
+  tag_name   = var.release_tag
+
+  provider = {
+    if var.github_token != "" {
+      token = var.github_token
+    }
+  }
+}
+
 resource "null_resource" "download_templates" {
   triggers = {
-    version = var.nuclei_templates_url
+    version = var.release_tag
   }
 
   provisioner "local-exec" {
-    command = "curl -o ${path.module}/src/nuclei-templates.zip -L ${var.nuclei_templates_url}"
+    command = "curl -o ${path.module}/src/nuclei-templates.zip -L ${data.github_release.templates.zipball_url}"
   }
 }
 

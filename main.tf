@@ -47,20 +47,6 @@ resource "aws_lambda_layer_version" "templates_layer" {
   compatible_runtimes = ["go1.x"]
 }
 
-# Trigger
-# resource "aws_cloudwatch_event_rule" "trigger" {
-#   name        = "${var.project_name}-trigger"
-#   description = "Trigger lambda function for ${var.alert_name} at ${var.cron_expression}"
-#   schedule_expression = "cron(${var.cron_expression})"
-# }
-
-# resource "aws_lambda_permission" "allow_cloudwatch" {
-#   action        = "lambda:InvokeFunction"
-#   function_name = aws_lambda_function.function.arn
-#   principal     = "events.amazonaws.com"
-#   source_arn    = aws_cloudwatch_event_rule.trigger.arn
-# }
-
 # tfsec:ignore:aws-cloudwatch-log-group-customer-key
 resource "aws_cloudwatch_log_group" "log_group" {
   name = "/aws/lambda/${var.project_name}-function"
