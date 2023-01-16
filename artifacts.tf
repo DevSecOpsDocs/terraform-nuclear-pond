@@ -50,6 +50,7 @@ resource "aws_s3_object" "upload_templates" {
 
 # Nuclei configuration files
 data "archive_file" "nuclei_config" {
+  depends_on  = [aws_s3_object.upload_config]
   type        = "zip"
   source_dir  = "${path.module}/config"
   output_path = "nuclei-config.zip"
