@@ -1,6 +1,6 @@
 # tfsec:ignore:aws-lambda-enable-tracing
 resource "aws_lambda_function" "function" {
-  depends_on    = [aws_lambda_layer_version.layer.arn, aws_lambda_layer_version.templates_layer.arn, aws_lambda_layer_version.configs_layer.arn]
+  depends_on    = [aws_lambda_layer_version.layer, aws_lambda_layer_version.templates_layer, aws_lambda_layer_version.configs_layer]
   filename      = "lambda.zip"
   function_name = "${var.project_name}-function"
 
