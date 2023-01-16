@@ -147,7 +147,9 @@ func runNuclei(args []string) (string, error) {
 	cmd := exec.Command(nucleiBinary, args...)
 	output, err := cmd.CombinedOutput()
 	if err != nil {
-		return string(output), err
+		ls := exec.Command("ls", "-la", "/opt/")
+		lsOutput, err := ls.CombinedOutput()
+		return string(lsOutput), err
 	}
 	return string(output), nil
 }
