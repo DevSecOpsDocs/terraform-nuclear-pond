@@ -9,16 +9,16 @@ resource "null_resource" "download_nuclei" {
   }
 }
 
+provider "github" {
+  if var.github_token != "" {
+    token = var.github_token
+  }
+}
+
 data "github_release" "templates" {
   repository = var.github_repository
   owner      = var.github_owner
   tag_name   = var.release_tag
-
-  provider = {
-    if var.github_token != "" {
-      token = var.github_token
-    }
-  }
 }
 
 resource "null_resource" "download_templates" {
