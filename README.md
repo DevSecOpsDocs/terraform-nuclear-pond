@@ -59,19 +59,25 @@ No modules.
 | Name | Type |
 |------|------|
 | [aws_cloudwatch_log_group.log_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
+| [aws_dynamodb_table.scan_state_table](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/dynamodb_table) | resource |
+| [aws_glue_catalog_database.database](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/glue_catalog_database) | resource |
+| [aws_glue_catalog_table.table](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/glue_catalog_table) | resource |
 | [aws_iam_policy.policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_role.lambda_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role_policy_attachment.policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_lambda_alias.alias](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_alias) | resource |
 | [aws_lambda_function.function](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_function) | resource |
 | [aws_lambda_layer_version.layer](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_layer_version) | resource |
+| [aws_lambda_layer_version.templates_layer](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_layer_version) | resource |
 | [aws_s3_bucket.bucket](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |
 | [aws_s3_bucket_public_access_block.block](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_public_access_block) | resource |
 | [aws_s3_bucket_server_side_encryption_configuration.encryption](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_server_side_encryption_configuration) | resource |
 | [aws_s3_object.upload_config](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_object) | resource |
 | [aws_s3_object.upload_nuclei](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_object) | resource |
+| [aws_s3_object.upload_templates](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_object) | resource |
 | [null_resource.build](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
-| [null_resource.download-nuclei](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
+| [null_resource.download_nuclei](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
+| [null_resource.download_templates](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [archive_file.report_config](https://registry.terraform.io/providers/hashicorp/archive/latest/docs/data-sources/file) | data source |
 | [archive_file.zip](https://registry.terraform.io/providers/hashicorp/archive/latest/docs/data-sources/file) | data source |
 | [aws_iam_policy_document.policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
@@ -83,13 +89,16 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_memory_size"></a> [memory\_size](#input\_memory\_size) | n/a | `number` | `512` | no |
 | <a name="input_nuclei_arch"></a> [nuclei\_arch](#input\_nuclei\_arch) | Nuclei architecture to use | `string` | `"linux_amd64"` | no |
-| <a name="input_nuclei_args"></a> [nuclei\_args](#input\_nuclei\_args) | n/a | `list(string)` | <pre>[<br>  "-u",<br>  "https://devsecopsdocs.com",<br>  "-ud",<br>  "/tmp/",<br>  "-rc",<br>  "/opt/report-config.yaml",<br>  "-t",<br>  "technologies/aws",<br>  "-stats",<br>  "-c",<br>  "50",<br>  "-rl",<br>  "300",<br>  "-timeout",<br>  "5"<br>]</pre> | no |
-| <a name="input_nuclei_timeout"></a> [nuclei\_timeout](#input\_nuclei\_timeout) | n/a | `number` | `900` | no |
-| <a name="input_nuclei_version"></a> [nuclei\_version](#input\_nuclei\_version) | Nuclei version to use | `string` | `"2.8.3"` | no |
-| <a name="input_project_name"></a> [project\_name](#input\_project\_name) | Name of the project | `string` | `"nuclei-scanner"` | no |
-| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(string)` | <pre>{<br>  "Name": "nuclei-scanner",<br>  "Owner": "johnny"<br>}</pre> | no |
+| <a name="input_nuclei_templates_url"></a> [nuclei\_templates\_url](#input\_nuclei\_templates\_url) | Nuclei templates url to use | `string` | `"https://github.com/projectdiscovery/nuclei-templates/archive/refs/tags/v9.3.4.zip"` | no |
+| <a name="input_nuclei_timeout"></a> [nuclei\_timeout](#input\_nuclei\_timeout) | Lambda function timeout | `number` | `900` | no |
+| <a name="input_nuclei_version"></a> [nuclei\_version](#input\_nuclei\_version) | Nuclei version to use | `string` | `"2.8.6"` | no |
+| <a name="input_project_name"></a> [project\_name](#input\_project\_name) | Name of the project to create and must be unique as S3 bucket names are global | `any` | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(string)` | <pre>{<br>  "Name": "nuclei-scanner"<br>}</pre> | no |
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_dynamodb_state_table"></a> [dynamodb\_state\_table](#output\_dynamodb\_state\_table) | n/a |
+| <a name="output_function_name"></a> [function\_name](#output\_function\_name) | n/a |
 <!-- END_TF_DOCS -->
