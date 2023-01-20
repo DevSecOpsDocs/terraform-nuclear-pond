@@ -1,3 +1,7 @@
+provider "github" {
+  token = var.github_token
+}
+
 # Download nuclei binary and templates
 resource "null_resource" "download_nuclei" {
   triggers = {
@@ -9,13 +13,21 @@ resource "null_resource" "download_nuclei" {
   }
 }
 
+# Private templates download from github
+data "github_release" "templates" {
+  repository  = var.github_repository
+  owner       = var.github_owner
+  retrieve_by = "tag"
+  release_tag = var.release_tag
+}
+
 resource "null_resource" "download_templates" {
   triggers = {
-    version = var.nuclei_templates_url
+    version = var.release_tag
   }
 
   provisioner "local-exec" {
-    command = "curl -o ${path.module}/src/nuclei-templates.zip -L ${var.nuclei_templates_url}"
+    command = "curl -o ${path.module}/src/nuclei-templates.zip -L ${data.github_release.templates.zipball_url}"
   }
 }
 
@@ -36,18 +48,18 @@ resource "aws_s3_object" "upload_templates" {
   source = "${path.module}/src/nuclei-templates.zip"
 }
 
-
-# Nuclei Config File `-config /opt/nuclei-config.yaml`
-data "archive_file" "report_config" {
+# Nuclei configuration files
+data "archive_file" "nuclei_config" {
   type        = "zip"
-  source_file = "config/report-config.yaml"
-  output_path = "report-config.zip"
+  source_dir  = "${path.module}/config"
+  output_path = "nuclei-configs.zip"
 }
 
 resource "aws_s3_object" "upload_config" {
+  depends_on = [data.archive_file.nuclei_config]
   bucket = aws_s3_bucket.bucket.id
-  key    = "report-config.zip"
-  source = "${path.module}/report-config.zip"
+  key    = "nuclei-configs.zip"
+  source = "${path.module}/nuclei-configs.zip"
 }
 
 # Build the lambda function to execute binary

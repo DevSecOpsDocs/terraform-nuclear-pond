@@ -16,6 +16,7 @@ With any engineering project, design decisions are made based on the requirement
 - Never pass `-u`, `-l`, `-json`, or `-o` flag to this lambda function but you can pass any other nuclei arguments you like
 - Nuclei refuses to not write to `$HOME/.config` so the `HOME`, which is not a writable filesystem with lambda, is set to `/tmp` which can cause warm starts to have the same filesystem and perhaps poison future configurations
 - Lambda function in golang is rebuilt on every apply for ease of development
+- When configuration files are updated, you might have to destroy and recreate the infrastructure
 
 ### Event Json
 

@@ -3,9 +3,8 @@ resource "aws_s3_bucket" "bucket" {
   bucket = "${var.project_name}-artifacts"
   tags   = var.tags
 
-  lifecycle {
-    prevent_destroy = true
-  }
+  # Delete all objects in the bucket before deleting the bucket
+  force_destroy = true
 }
 
 #tfsec:ignore:aws-s3-encryption-customer-key
