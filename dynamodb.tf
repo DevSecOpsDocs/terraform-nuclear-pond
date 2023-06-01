@@ -12,5 +12,5 @@ resource "aws_dynamodb_table" "scan_state_table" {
     enabled        = true
   }
 
-  tags = var.tags
+  #tags = var.tags
 }

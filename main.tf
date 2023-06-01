@@ -20,7 +20,7 @@ resource "aws_lambda_function" "function" {
     }
   }
 
-  tags = var.tags
+  #tags = var.tags
 }
 
 resource "aws_lambda_alias" "alias" {
@@ -63,7 +63,7 @@ resource "aws_cloudwatch_log_group" "log_group" {
 
   retention_in_days = 90
 
-  tags = var.tags
+  #tags = var.tags
 }
 
 ###
@@ -72,9 +72,10 @@ resource "aws_cloudwatch_log_group" "log_group" {
 resource "aws_iam_role" "lambda_role" {
   name = "${var.project_name}-role"
 
-  assume_role_policy = data.aws_iam_policy_document.trust.json
-
-  tags = var.tags
+  assume_role_policy = data.aws_iam_policy_document.trust.json  
+  permissions_boundary = data.terraform_remote_state.cool_assessment_terraform.outputs.terraformer_permissions_boundary_policy.arn
+ 
+  #tags = var.tags
 }
 
 data "aws_iam_policy_document" "trust" {

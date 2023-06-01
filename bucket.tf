@@ -1,7 +1,7 @@
 #tfsec:ignore:aws-s3-enable-bucket-logging tfsec:ignore:aws-s3-enable-versioning
 resource "aws_s3_bucket" "bucket" {
   bucket = "${var.project_name}-artifacts"
-  tags   = var.tags
+  #tags   = var.pond_tags
 
   # Delete all objects in the bucket before deleting the bucket
   force_destroy = true
