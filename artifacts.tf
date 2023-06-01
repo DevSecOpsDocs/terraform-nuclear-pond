@@ -2,19 +2,13 @@ provider "github" {
   token = var.github_token
 }
 
-# Download nuclei binary and templates
-resource "null_resource" "always_run" {  
- triggers = {
-    timestamp = "${timestamp()}"  
-  }
-}
 
 # Download nuclei binary and templates
-resource "null_resource" "download_nuclei" {  
-  depends_on          = [null_resource.always_run]
+resource "null_resource" "download_nuclei" {
   triggers = {
-    version = var.nuclei_version     
-  
+    version = var.nuclei_version
+    timestamp = "${timestamp()}"
+
   }
 
   provisioner "local-exec" {
@@ -25,9 +19,9 @@ resource "null_resource" "download_nuclei" {
 }
 
 resource "null_resource" "download_templates" {
-  depends_on = [null_resource.always_run]
   triggers = {
-    version = var.release_tag    
+    version   = var.release_tag
+    timestamp = "${timestamp()}"
   }
 
   provisioner "local-exec" {
@@ -37,8 +31,8 @@ resource "null_resource" "download_templates" {
 
 # Upload them to s3
 resource "aws_s3_object" "upload_nuclei" {
-  depends_on = [null_resource.download_nuclei]    
- 
+  depends_on = [null_resource.download_nuclei]
+
   bucket = aws_s3_bucket.bucket.id
   key    = "nuclei.zip"
   source = "${path.module}/src/nuclei.zip"
@@ -54,6 +48,8 @@ resource "aws_s3_object" "upload_templates" {
 
 # Nuclei configuration files
 data "archive_file" "nuclei_config" {
+  //always run this
+  depends_on  = [null_resource.download_templates]
   type        = "zip"
   source_dir  = "${path.module}/config"
   output_path = "nuclei-configs.zip"

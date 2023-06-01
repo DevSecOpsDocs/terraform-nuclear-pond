@@ -61,12 +61,17 @@ func handler(ctx context.Context, event Event) (Response, error) {
 	}
 
 	if len(matches) > 0 {
-		nucleiTemplates := matches[0]
+		nucleiTemplates = matches[0]
 		fmt.Printf("First directory matching the pattern: %s\n", nucleiTemplates)
+
+	} else {
+		fmt.Printf("Did not find any matching templates directories.")
 	}
 
 	//explicitly set our /opt/nuclei-templates directory, since .templates-config.json appears to be ignored
 	event.Args = append(event.Args, "-ud", nucleiTemplates)
+	//don't update templates, we're on a readonly FS
+	event.Args = append(event.Args, "-duc")
 
 	// Check to see if it is a single target or multiple
 	if len(event.Targets) == 1 {
