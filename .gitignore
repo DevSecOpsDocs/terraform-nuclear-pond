@@ -1,3 +1,7 @@
 src/main
 src/nuclei
 src/*.zip
+lambda.zip
+nuclei-configs.zip
+**tfstate
+**tfstate.backup

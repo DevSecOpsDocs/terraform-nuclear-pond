@@ -1,3 +1,8 @@
+variable "aws_region" {
+  description = "Name of the AWS Region where this is hosted."
+  default     = "us-east-1"
+}
+
 variable "project_name" {
   description = "Name of the project to create and must be unique as S3 bucket names are global"
 }
@@ -5,7 +10,7 @@ variable "project_name" {
 # Nuclei binary configuration
 variable "nuclei_version" {
   description = "Nuclei version to use"
-  default     = "2.8.7"
+  default     = "2.9.6"
 }
 
 variable "nuclei_arch" {
@@ -26,7 +31,7 @@ variable "github_owner" {
 
 variable "release_tag" {
   description = "Github release tag to use for templates"
-  default     = "v9.3.4"
+  default     = "v9.5.1"
 }
 
 variable "github_token" {
