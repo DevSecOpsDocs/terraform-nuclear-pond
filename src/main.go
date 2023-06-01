@@ -32,10 +32,11 @@ type Response struct {
 
 // Variables for the nuclei binary, filesystem location, and temporary files
 var (
-	nucleiBinary = "/opt/nuclei"
-	fileSystem   = "/tmp/"
-	targetsFile  = fileSystem + "targets.txt"
-	scanOutput   = fileSystem + "output.json"
+	nucleiBinary    = "/opt/nuclei"
+	nucleiTemplates = "/opt/nuclei-templates"
+	fileSystem      = "/tmp/"
+	targetsFile     = fileSystem + "targets.txt"
+	scanOutput      = fileSystem + "output.json"
 )
 
 func handler(ctx context.Context, event Event) (Response, error) {
@@ -48,6 +49,11 @@ func handler(ctx context.Context, event Event) (Response, error) {
 			Error: "Nuclei requires a targets, args, and output to run. Please specify the target(s), args, and output within the event.",
 		}, nil
 	}
+
+	//check to see if any /opt/nuclei-templates* directory exists.
+
+	//explicitly set our /opt/nuclei-templates directory, since .templates-config.json appears to be ignored
+	event.Args = append(event.Args, "-ud", nucleiTemplates)
 
 	// Check to see if it is a single target or multiple
 	if len(event.Targets) == 1 {
@@ -66,7 +72,7 @@ func handler(ctx context.Context, event Event) (Response, error) {
 
 	// If the output is json or s3 then output as json
 	if event.Output == "json" || event.Output == "s3" {
-		event.Args = append(event.Args, "-json", "-o", scanOutput, "-silent")
+		event.Args = append(event.Args, "-jsonl", "-o", scanOutput, "-silent")
 	}
 
 	// Run the nuclei binary with the command and args
