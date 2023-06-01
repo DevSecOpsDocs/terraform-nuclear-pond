@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"time"
 
 	"github.com/aws/aws-lambda-go/lambda"
@@ -51,6 +52,18 @@ func handler(ctx context.Context, event Event) (Response, error) {
 	}
 
 	//check to see if any /opt/nuclei-templates* directory exists.
+	pattern := "/opt/nuclei-templates*"
+
+	matches, err := filepath.Glob(pattern)
+
+	if err != nil {
+		fmt.Printf("Error while matching pattern: %v, can't search for templates directory.\n", err)
+	}
+
+	if len(matches) > 0 {
+		nucleiTemplates := matches[0]
+		fmt.Printf("First directory matching the pattern: %s\n", nucleiTemplates)
+	}
 
 	//explicitly set our /opt/nuclei-templates directory, since .templates-config.json appears to be ignored
 	event.Args = append(event.Args, "-ud", nucleiTemplates)
