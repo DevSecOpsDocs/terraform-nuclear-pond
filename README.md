@@ -112,3 +112,8 @@ No modules.
 | <a name="output_dynamodb_state_table"></a> [dynamodb\_state\_table](#output\_dynamodb\_state\_table) | n/a |
 | <a name="output_function_name"></a> [function\_name](#output\_function\_name) | n/a |
 <!-- END_TF_DOCS -->
+
+
+## Custom Templates
+
+If you want to include any custom templates in your nuclearpond lambda image, add them to src/custom-templates, these will exist on the nuclei image under the 'custom' templates directory, and you should be able to run e.g. -t custom/some-template-name or -t custom and run those templates.
