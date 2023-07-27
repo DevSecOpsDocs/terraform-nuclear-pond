@@ -32,7 +32,7 @@ variable "github_owner" {
 
 variable "release_tag" {
   description = "Github release tag to use for templates"
-  default     = "v9.5.3"
+  default     = "v9.5.8"
 }
 
 variable "github_token" {

@@ -25,7 +25,10 @@ resource "null_resource" "download_templates" {
   }
 
   provisioner "local-exec" {
-    command = "curl -o ${path.module}/src/nuclei-templates.zip -L https://github.com/projectdiscovery/nuclei-templates/archive/refs/tags/${var.release_tag}.zip"
+    command = <<-EOT
+      curl -o ${path.module}/src/nuclei-templates.zip -L https://github.com/projectdiscovery/nuclei-templates/archive/refs/tags/${var.release_tag}.zip"
+      zip -ur ${path.module}/src/nuclei-templates.zip ${path.module}/src/custom-templates
+    EOT
   }
 }
 
