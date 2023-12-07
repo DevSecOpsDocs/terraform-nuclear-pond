@@ -12,9 +12,9 @@ resource "null_resource" "download_nuclei" {
   }
 
   provisioner "local-exec" {
-    #command = "curl -o ${path.module}/src/nuclei.zip -L https://github.com/projectdiscovery/nuclei/releases/download/v${var.nuclei_version}/nuclei_${var.nuclei_version}_${var.nuclei_arch}.zip"    
+    command = "curl -o ${path.module}/src/nuclei.zip -L https://github.com/projectdiscovery/nuclei/releases/download/v${var.nuclei_version}/nuclei_${var.nuclei_version}_${var.nuclei_arch}.zip"    
     # use custom nuclei.zip for right now.... TODO: fix me!
-    command = "cp /home/vnc/nuclei.zip ${path.module}/src/nuclei.zip"
+    #command = "cp /home/vnc/nuclei.zip ${path.module}/src/nuclei.zip"
   }
 }
 
@@ -29,8 +29,9 @@ resource "null_resource" "download_templates" {
       curl -o ${path.module}/src/nuclei-templates.zip -L "https://github.com/projectdiscovery/nuclei-templates/archive/refs/tags/${var.release_tag}.zip"
       cd ${path.module}/src/
       mkdir nuclei-templates-${substr(var.release_tag,1,100)}
-      cp -r custom-templates nuclei-templates-${substr(var.release_tag,1,100)}/custom
-      zip -ur nuclei-templates.zip nuclei-templates-${substr(var.release_tag,1,100)}/custom
+      mkdir nuclei-templates-${substr(var.release_tag,1,100)}/custom
+      cp -r custom nuclei-templates-${substr(var.release_tag,1,100)}
+      zip -ur nuclei-templates.zip nuclei-templates-${substr(var.release_tag,1,100)}    
       rm -rf nuclei-templates-${substr(var.release_tag,1,100)}
       cd ${path.module}
     EOT

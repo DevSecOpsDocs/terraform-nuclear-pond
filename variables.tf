@@ -5,13 +5,13 @@ variable "aws_region" {
 
 variable "project_name" {
   description = "Name of the project to create and must be unique as S3 bucket names are global"
-  default     = "cisa-pond-test-5"
+  default     = "cisa-pond-18"
 }
 
 # Nuclei binary configuration
 variable "nuclei_version" {
   description = "Nuclei version to use"
-  default     = "2.9.6"
+  default     = "3.1.0"
 }
 
 variable "nuclei_arch" {
@@ -32,7 +32,7 @@ variable "github_owner" {
 
 variable "release_tag" {
   description = "Github release tag to use for templates"
-  default     = "v9.5.8"
+  default     = "v9.7.1"
 }
 
 variable "github_token" {
